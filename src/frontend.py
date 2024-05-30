@@ -21,7 +21,7 @@ hits = ['A', 'Z', 'E', 'R', 'U', 'I', 'O', 'P']
 
 names = get_catergories()
 
-tagger = TagManager()
+tagger = get_tagger()
 
 
 class MainApp(ctk.CTk):
@@ -49,7 +49,7 @@ class MainFrame(ctk.CTkFrame):
         self.master = master
         self.indexLabel = ctk.CTkLabel(self, text=f'{tagger.index} / {tagger.total_tag}', font=(font, 30),
                                        text_color=colors['black'])
-        self.nameLabel = ctk.CTkLabel(self, text='orl21Gy', font=(font, 30), text_color=colors['black'])
+        self.nameLabel = ctk.CTkLabel(self, text=tagger.get_current_name(), font=(font, 30), text_color=colors['black'])
         self.chooseFrame = ChooseFrame(self, fg_color='transparent', border_width=3, border_color=colors['hblue'],
                                        corner_radius=10)
         self.openButton = ctk.CTkButton(self, text='', fg_color=colors['white'], border_color=colors['black'],
@@ -79,13 +79,21 @@ class MainFrame(ctk.CTkFrame):
         if end:
             self.nameLabel.configure(text_color=colors['blue'])
 
+    def update_selection(self):
+        self.indexLabel.configure(text=f'{tagger.index} / {tagger.total_tag}')
+        self.nameLabel.configure(text=tagger.get_current_name())
+
+    def select(self):
+        global tagger
+        filename = tkinter.filedialog.askopenfilename(defaultextension='.json')
+        change_parsed_file(filename)
+        tagger = get_tagger()
+        self.update_selection()
+        self.chooseFrame.reset_colors()
+
     @staticmethod
     def open():
         os.startfile(os.path.join(os.getcwd(), "data/output"))
-
-    @staticmethod
-    def select():
-        filename = tkinter.filedialog.askopenfilename(defaultextension='.json')
 
 
 class ChooseFrame(ctk.CTkFrame):
@@ -115,14 +123,15 @@ class ChooseFrame(ctk.CTkFrame):
 
     def callback(self, index, event=None):
         global tagger
-        self.on_hit(index)
-        progress_index, next_name = tagger.next(names[index])
-        if next_name != 'end':
-            self.master.update_index(progress_index, next_name)
-            self.after(300, partial(self.reset_button, index))
-        else:
-            self.on_end()
-            self.master.update_index(progress_index - 1, 'Terminé !', end=True)
+        if not tagger.complete:
+            self.on_hit(index)
+            progress_index, next_name = tagger.next(names[index])
+            if next_name != 'end':
+                self.master.update_index(progress_index, next_name)
+                self.after(300, partial(self.reset_button, index))
+            else:
+                self.on_end()
+                self.master.update_index(progress_index - 1, 'Terminé !', end=True)
 
     def on_hit(self, index):
         self.buttons[index][0].configure(border_color=colors['red'], text_color=colors['red'])
@@ -136,6 +145,10 @@ class ChooseFrame(ctk.CTkFrame):
         for (button, label) in self.buttons.values():
             button.configure(border_color=colors['blue'], text_color=colors['blue'])
             label.configure(text_color=colors['blue'])
+
+    def reset_colors(self):
+        for index in self.buttons:
+            self.reset_button(index)
 
 
 def fastgrid(widget, x, y, xpad, ypad, sticky='', columnspan=1, rowspan=1):

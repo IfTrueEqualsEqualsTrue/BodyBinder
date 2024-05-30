@@ -4,7 +4,10 @@ from config_manager import *
 
 config = get_config('config.yml')
 
-parsed_file = config['parsed_file']
+if not config['parsed_file']:
+    parsed_file = 'data/ressources/dummy.json'
+else:
+    parsed_file = config['parsed_file']
 output_file = 'data/output/output.json'
 category_file = 'data/output/categories.json'
 
@@ -84,5 +87,24 @@ class TagManager:
     def _end(self):
         self.complete = True
         save_progress()
+
+    def get_current_name(self):
+        try:
+            return parsed['to_tag'][self.index - 1]
+        except IndexError:
+            return 'Terminé !'
+
+
+def change_parsed_file(new_file):
+    global parsed, config, parsed_file
+    parsed_file = new_file
+    parsed = open_saved_json(new_file)
+    config['parsed_file'] = new_file
+    save_config(config, 'config.yml')
+
+
+def get_tagger():
+    return TagManager()
+
 
 
