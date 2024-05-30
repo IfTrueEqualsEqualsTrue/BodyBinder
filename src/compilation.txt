@@ -1,0 +1,1 @@
+pyinstaller --distpath C:\Users\guill\Desktop\Code\BodyBinder\Compilation\build main.spec

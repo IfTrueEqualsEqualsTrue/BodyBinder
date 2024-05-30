@@ -46,6 +46,7 @@ class MainFrame(ctk.CTkFrame):
 
     def __init__(self, master: any, **kwargs):
         super().__init__(master, **kwargs)
+        size = 50
         self.master = master
         self.indexLabel = ctk.CTkLabel(self, text=f'{tagger.index} / {tagger.total_tag}', font=(font, 30),
                                        text_color=colors['black'])
@@ -60,18 +61,20 @@ class MainFrame(ctk.CTkFrame):
                                           width=55, height=50, border_width=3, hover_color=colors['blue'],
                                           command=self.select,
                                           image=ctk.CTkImage(Image.open('data/ressources/select.png'), size=(40, 40)))
-
+        self.logo = ctk.CTkLabel(self, text='', image=ctk.CTkImage(Image.open('data/ressources/nobg_icon.png'),
+                                                                   size=(size, size)))
         self.display()
 
     def display(self):
         self.grid_rowconfigure((0, 1, 2), weight=1)
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=0)
-        fastgrid(self.indexLabel, 0, 0, padx, pady, 'ew')
-        fastgrid(self.nameLabel, 1, 0, padx, pady, 'ew')
-        fastgrid(self.selectButton, 0, 1, padx * 2, pady, '')
-        fastgrid(self.openButton, 1, 1, padx * 2, pady, '')
-        fastgrid(self.chooseFrame, 2, 0, padx * 2, pady * 2, 'nsew', columnspan=2)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_columnconfigure((0, 2), weight=0)
+        fastgrid(self.logo, 0, 0, padx, pady, 'ne')
+        fastgrid(self.indexLabel, 0, 1, padx, pady, 'ew')
+        fastgrid(self.nameLabel, 1, 1, padx, pady, 'ew')
+        fastgrid(self.selectButton, 0, 2, padx * 2, pady, '')
+        fastgrid(self.openButton, 1, 2, padx * 2, pady, '')
+        fastgrid(self.chooseFrame, 2, 0, padx * 2, pady * 2, 'nsew', columnspan=3)
 
     def update_index(self, progress_index, next_name, end=False):
         self.indexLabel.configure(text=f"{progress_index + 1} / {tagger.total_tag}")
@@ -85,11 +88,14 @@ class MainFrame(ctk.CTkFrame):
 
     def select(self):
         global tagger
-        filename = tkinter.filedialog.askopenfilename(defaultextension='.json')
-        change_parsed_file(filename)
-        tagger = get_tagger()
-        self.update_selection()
-        self.chooseFrame.reset_colors()
+        try:
+            filename = tkinter.filedialog.askopenfilename(defaultextension='.json')
+            change_parsed_file(filename)
+            tagger = get_tagger()
+            self.update_selection()
+            self.chooseFrame.reset_colors()
+        except FileNotFoundError:
+            pass
 
     @staticmethod
     def open():
