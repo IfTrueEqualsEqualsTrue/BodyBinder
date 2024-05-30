@@ -5,8 +5,8 @@ from config_manager import *
 config = get_config('config.yml')
 
 parsed_file = config['parsed_file']
-output_file = config['output_file']
-category_file = 'data/categories.json'
+output_file = 'data/output/output.json'
+category_file = 'data/output/categories.json'
 
 
 parsed = open_saved_json(parsed_file)
@@ -61,4 +61,28 @@ def save_progress():
 
 def get_catergories():
     return categories['primary']
+
+
+class TagManager:
+
+    def __init__(self):
+        self.complete = False
+        self.index = len(parsed['tagged']) if len(parsed['tagged']) != 0 else 1
+        self.total_tag = len(parsed['to_tag']) + len(parsed['tagged'])
+
+    def next(self, category):
+        tag_label(0, category)
+        if self.index < self.total_tag - 1:
+            self.index += 1
+            if self.index % 5 == 0:
+                save_progress()
+        else:
+            self._end()
+            return self.total_tag, 'end'
+        return self.index - 1, parsed['to_tag'][0]
+
+    def _end(self):
+        self.complete = True
+        save_progress()
+
 
