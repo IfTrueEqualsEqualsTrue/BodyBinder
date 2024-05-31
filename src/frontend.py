@@ -17,7 +17,7 @@ font = 'Lucida Bright'
 padx = 10
 pady = 10
 
-hits = ['A', 'Z', 'E', 'R', 'U', 'I', 'O', 'P']
+hits = ['A', 'Z', 'E', 'R', 'U', 'I', 'O', 'P', 'C', 'N']
 
 names = get_catergories()
 
@@ -151,6 +151,7 @@ class ChooseFrame(ctk.CTkFrame):
         for (button, label) in self.buttons.values():
             button.configure(border_color=colors['blue'], text_color=colors['blue'])
             label.configure(text_color=colors['blue'])
+        open_output()
 
     def reset_colors(self):
         for index in self.buttons:

@@ -1,16 +1,1 @@
-{
-  "to_tag": [
-    "test",
-    "Test02",
-    "prostate67Gy",
-    "01blabla",
-    "07sein12Gy",
-    "prst07",
-    "orl24Gy",
-    "01fesse",
-    "prtsein"
-  ],
-  "tagged": [
-
-  ]
-}
+{"to_tag": ["prtsein"], "tagged": ["test", "Test02", "prostate67Gy", "01blabla", "07sein12Gy", "prst07", "orl24Gy", "01fesse"]}

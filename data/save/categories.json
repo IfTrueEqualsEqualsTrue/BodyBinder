@@ -2,8 +2,13 @@
   "primary": [
     "Crane",
     "Orl",
-    "Poumon",
-    "Lombaire",
-    "Sein"
+    "Thorax",
+    "Sein",
+    "Pelvis",
+    "Gastro",
+    "Membres",
+    "Vertèbres",
+    "Os",
+    "Nodules"
   ]
 }

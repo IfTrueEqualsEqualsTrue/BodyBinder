@@ -2,7 +2,6 @@ import yaml
 from yaml import load, dump, Loader
 import json
 
-
 def get_config(config_path):
     fichier = open(config_path, 'r')
     return load(fichier, Loader)

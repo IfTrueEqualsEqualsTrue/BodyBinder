@@ -1,6 +1,8 @@
 """ Logic behind bodyBinder"""
 
 from config_manager import *
+import subprocess
+import os
 
 config = get_config('config.yml')
 
@@ -107,4 +109,6 @@ def get_tagger():
     return TagManager()
 
 
+def open_output():
+    subprocess.Popen(f'explorer /select,"{os.path.join(os.getcwd(), "data\output", "output.json")}"')
 
