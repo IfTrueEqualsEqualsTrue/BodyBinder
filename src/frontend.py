@@ -61,6 +61,10 @@ class MainFrame(ctk.CTkFrame):
                                           width=55, height=50, border_width=3, hover_color=colors['blue'],
                                           command=self.select,
                                           image=ctk.CTkImage(Image.open('data/ressources/select.png'), size=(40, 40)))
+        self.previousButton = ctk.CTkButton(self, text='', fg_color=colors['white'], border_color=colors['black'],
+                                            width=55, height=50, border_width=3, hover_color=colors['blue'],
+                                            command=self.previous,
+                                            image=ctk.CTkImage(Image.open('data/ressources/return.png'), size=(40, 40)))
         self.logo = ctk.CTkLabel(self, text='', image=ctk.CTkImage(Image.open('data/ressources/nobg_icon.png'),
                                                                    size=(size, size)))
         self.display()
@@ -69,7 +73,8 @@ class MainFrame(ctk.CTkFrame):
         self.grid_rowconfigure((0, 1, 2), weight=1)
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure((0, 2), weight=0)
-        fastgrid(self.logo, 0, 0, padx, pady, 'ne')
+        fastgrid(self.logo, 0, 0, padx, pady, 'ew')
+        fastgrid(self.previousButton, 1, 0, padx*2, pady, '')
         fastgrid(self.indexLabel, 0, 1, padx, pady, 'ew')
         fastgrid(self.nameLabel, 1, 1, padx, pady, 'ew')
         fastgrid(self.selectButton, 0, 2, padx * 2, pady, '')
@@ -81,6 +86,11 @@ class MainFrame(ctk.CTkFrame):
         self.nameLabel.configure(text=next_name)
         if end:
             self.nameLabel.configure(text_color=colors['blue'])
+
+    def previous(self):
+        index, name = tagger.previous()
+        self.indexLabel.configure(text=f"{index + 1} / {tagger.total_tag}")
+        self.nameLabel.configure(text=name)
 
     def update_selection(self):
         self.indexLabel.configure(text=f'{tagger.index} / {tagger.total_tag}')

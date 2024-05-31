@@ -48,7 +48,7 @@ def tag_label(index, category):
 def untag_label(label, category):
     global parsed, output
     output[category].remove(label)
-    parsed['to_tag'].append(label)
+    parsed['to_tag'].insert(0, label)
     parsed['tagged'].remove(label)
 
 
@@ -74,16 +74,25 @@ class TagManager:
         self.complete = False
         self.index = len(parsed['tagged']) if len(parsed['tagged']) != 0 else 1
         self.total_tag = len(parsed['to_tag']) + len(parsed['tagged'])
+        self.previous_label = 'Aucun'
+        self.previous_category = ''
 
     def next(self, category):
+        self.previous_label = parsed['to_tag'][0]
+        self.previous_category = category
         tag_label(0, category)
         if self.index < self.total_tag - 1:
             self.index += 1
-            if self.index % 5 == 0:
-                save_progress()
         else:
             self._end()
             return self.total_tag, 'end'
+        print(parsed)
+        return self.index - 1, parsed['to_tag'][0]
+
+    def previous(self):
+        untag_label(self.previous_label, self.previous_category)
+        self.index -= 1
+        print(parsed)
         return self.index - 1, parsed['to_tag'][0]
 
     def _end(self):
