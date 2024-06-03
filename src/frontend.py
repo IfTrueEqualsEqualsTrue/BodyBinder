@@ -31,7 +31,7 @@ class MainApp(ctk.CTk):
         global root
         super().__init__(**kwargs)
         self.title('BodyBinder')
-        self.geometry('720x480')
+        self.geometry('1080x420')
         self.iconbitmap('data/ressources/nobg_icon.ico')
         self.configure(fg_color=colors['white'])
         root = self  # Instance principale de l'application
@@ -82,6 +82,7 @@ class MainFrame(ctk.CTkFrame):
         fastgrid(self.chooseFrame, 2, 0, padx * 2, pady * 2, 'nsew', columnspan=3)
 
     def update_index(self, progress_index, next_name, end=False):
+        self.previousButton.configure(state='normal')
         self.indexLabel.configure(text=f"{progress_index + 1} / {tagger.total_tag}")
         self.nameLabel.configure(text=next_name)
         if end:
@@ -89,8 +90,10 @@ class MainFrame(ctk.CTkFrame):
 
     def previous(self):
         index, name = tagger.previous()
-        self.indexLabel.configure(text=f"{index + 1} / {tagger.total_tag}")
-        self.nameLabel.configure(text=name)
+        if index is not None:
+            self.indexLabel.configure(text=f"{index + 1} / {tagger.total_tag}")
+            self.nameLabel.configure(text=name)
+            self.previousButton.configure(state='disabled')
 
     def update_selection(self):
         self.indexLabel.configure(text=f'{tagger.index} / {tagger.total_tag}')

@@ -47,9 +47,12 @@ def tag_label(index, category):
 
 def untag_label(label, category):
     global parsed, output
-    output[category].remove(label)
-    parsed['to_tag'].insert(0, label)
-    parsed['tagged'].remove(label)
+    try:
+        output[category].remove(label)
+        parsed['to_tag'].insert(0, label)
+        parsed['tagged'].remove(label)
+    except ValueError:
+        raise FileNotFoundError
 
 
 def display_cache():
@@ -86,14 +89,15 @@ class TagManager:
         else:
             self._end()
             return self.total_tag, 'end'
-        print(parsed)
         return self.index - 1, parsed['to_tag'][0]
 
     def previous(self):
-        untag_label(self.previous_label, self.previous_category)
-        self.index -= 1
-        print(parsed)
-        return self.index - 1, parsed['to_tag'][0]
+        try:
+            untag_label(self.previous_label, self.previous_category)
+            self.index -= 1
+            return self.index - 1, parsed['to_tag'][0]
+        except FileNotFoundError:
+            return None, 0
 
     def _end(self):
         self.complete = True
@@ -103,7 +107,7 @@ class TagManager:
         try:
             return parsed['to_tag'][self.index - 1]
         except IndexError:
-            return 'Terminé !'
+            return 'Select a tagging file'
 
 
 def change_parsed_file(new_file):
