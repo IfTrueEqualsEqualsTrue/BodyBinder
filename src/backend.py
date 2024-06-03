@@ -123,5 +123,5 @@ def get_tagger():
 
 
 def open_output():
-    subprocess.Popen(f'explorer /select,"{os.path.join(os.getcwd(), "data\output", "output.json")}"')
+    subprocess.Popen(f'explorer /select,"{os.path.join(os.getcwd(), "data/output", "output.json")}"')
 
