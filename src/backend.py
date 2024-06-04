@@ -67,7 +67,7 @@ def save_progress():
     write_json(output, output_file)
 
 
-def get_catergories():
+def get_categories():
     return categories['primary']
 
 

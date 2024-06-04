@@ -17,15 +17,15 @@ font = 'Lucida Bright'
 padx = 10
 pady = 10
 
-hits = ['A', 'Z', 'E', 'R', 'U', 'I', 'O', 'P', 'C', 'N']
+hits = ['A', 'Z', 'E', 'R', 'U', 'I', 'O', 'P', 'C', 'N', 'T', 'Y', 'V', 'B']
 
-names = get_catergories()
+names = get_categories()
 
 tagger = get_tagger()
 
 
 class MainApp(ctk.CTk):
-    """ Application principale de SquidReport"""
+    """ Main application BodyBinder"""
 
     def __init__(self, **kwargs):
         global root
@@ -34,7 +34,7 @@ class MainApp(ctk.CTk):
         self.geometry('1080x420')
         self.iconbitmap('data/ressources/nobg_icon.ico')
         self.configure(fg_color=colors['white'])
-        root = self  # Instance principale de l'application
+        root = self
         self.mainFrame = MainFrame(self, fg_color='transparent')
         center(self)
         fastgrid(self.mainFrame, 0, 0, 0, 0, "nsew")
@@ -42,7 +42,7 @@ class MainApp(ctk.CTk):
 
 
 class MainFrame(ctk.CTkFrame):
-    """ Frame principale de binding"""
+    """ Main binding frame"""
 
     def __init__(self, master: any, **kwargs):
         super().__init__(master, **kwargs)
