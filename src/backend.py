@@ -84,7 +84,7 @@ class TagManager:
         self.previous_label = parsed['to_tag'][0]
         self.previous_category = category
         tag_label(0, category)
-        if self.index < self.total_tag - 1:
+        if self.index < self.total_tag:
             self.index += 1
         else:
             self._end()
@@ -123,5 +123,6 @@ def get_tagger():
 
 
 def open_output():
-    subprocess.Popen(f'explorer /select,"{os.path.join(os.getcwd(), "data/output", "output.json")}"')
+    output_path = os.path.join(os.getcwd(), "data", "output", "output.json")
+    subprocess.Popen(f'explorer /select,"{output_path}"')
 
